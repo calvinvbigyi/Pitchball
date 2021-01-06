@@ -1,12 +1,14 @@
 import csv
 import yfinance as yf
+import pandas as pd
+import json
+import matplotlib
 
-arkk = yf.Ticker("ARKK")
-arkq = yf.Ticker("ARKQ")
-arkw = yf.Ticker("ARKW")
-arkf = yf.Ticker("ARKF")
+with open('arkk.csv') as csvfile:
+    df = pd.read_csv(csvfile)
+    for ticker in df["ticker"].dropna():
+        print(ticker)
+        stock = yf.Ticker(ticker.split()[0])
+        df['sector'] = stock.info["sector"]
 
-print(arkk.info)
-print(arkq.info)
-print(arkw.info)
-print(arkf.info)
+    df["ticker"].hist(by=df['sector'])
